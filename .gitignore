@@ -36,3 +36,11 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+
+*.tsbuildinfo
+.next
+dist
+node_modules
+.env
+.env.local
