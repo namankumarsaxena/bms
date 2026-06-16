@@ -11,7 +11,10 @@ jobs:
     steps:
        - run : |
             echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
-            mkdir .ssh
+            mkdir -p /home/runner/.ssh
+            ls /home/runner/.ssh
+            touch /home/runner/.ssh/known_hosts
+            chmod 700 /home/runner/ssh_key
             echo "${{ secrets.KNOWN_HOSTS }}" &> ~/.ssh/known_hosts
             ssh -i ~/ssh_key root@16.170.168.106
             cd bms/ && git pull
