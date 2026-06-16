@@ -2,16 +2,14 @@
 name: Deploy to staging 
 on:
     push:
-      branches:
-        - "main"
+      branches: [ main ]
 
 jobs:
   redeploy_everything:
+    runs-on: ubuntu-latest
     name: Deploying the frontend to staging cluster
-
     steps:
-      - name: SSH Into server
-      - run : |
+       - run : |
             echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key
             ssh -i ~/ssh_key root@16.170.168.106
             cd bms/ && git pull
