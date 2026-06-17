@@ -1,0 +1,32 @@
+name: Deploy to staging
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  redeploy_everything:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
+          chmod 600 ~/ssh_key
+
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+          ssh -i ~/ssh_key ubuntu@13.48.132.130 -t "
+            cd ~/bms &&
+            git pull origin production &&
+
+            export PATH=/home/ubuntu/.nvm/versions/node/v24.16.0/bin:\$PATH &&
+
+            pnpm install &&
+            pnpm run build &&
+
+            pm2 restart http-server &&
+            pm2 restart ws-server
+          "
