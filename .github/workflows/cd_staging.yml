@@ -1,22 +1,2 @@
 
-name: Deploy to staging 
-on:
-    push:
-      branches:
-        - "main"
-
-jobs:
-  redeploy_everything:
-    name: Deploying the frontend to staging cluster
-
-    steps:
-      - name: SSH Into server
-      - run : |
-            echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key
-            ssh -i ~/ssh_key root@16.170.168.106
-            cd bms/ && git pull
-            pnpm install
-            pnpm run build
-            pm2 start fe-server
-            pm2 start http-server
-            pm2 start ws-server
+         
